@@ -12,7 +12,7 @@ doctorRouter.get("/user", async (req, res, next) => {
   res.send(doctors);
 });
 doctorRouter.patch("/:id", auth, async (req, res, next) => {
-  let { name, department, email, phone, doctorAddress, rate, image } = req.body;
+  let { name, department, email, phone, address, rate, image } = req.body;
   const { id } = req.params;
   try {
     const oldDoctor = await Doctor.findOne({ id });
@@ -21,7 +21,7 @@ doctorRouter.patch("/:id", auth, async (req, res, next) => {
       department: department || oldDoctor.department,
       email: email || oldDoctor.email,
       phone: phone || oldDoctor.phone,
-      doctorAddress: doctorAddress || oldDoctor.doctorAddress,
+      address: address || oldDoctor.address,
       rate: rate || oldDoctor.rate,
       image: image || oldDoctor.image,
     });
@@ -43,8 +43,7 @@ doctorRouter.get("/:id", auth, async (req, res, next) => {
 });
 
 doctorRouter.post("/", auth, async (req, res, next) => {
-  const { name, department, email, phone, doctorAddress, rate, image } =
-    req.body;
+  const { name, department, email, phone, address, rate, image } = req.body;
   try {
     let doctor = await Doctor.findOne({ email });
     if (doctor) {
@@ -55,7 +54,7 @@ doctorRouter.post("/", auth, async (req, res, next) => {
       department,
       email,
       phone,
-      doctorAddress,
+      address,
       rate,
       image,
     });

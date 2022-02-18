@@ -27,9 +27,9 @@ const doctorSchema = new mongoose.Schema({
     required: true,
     length: 11,
   },
-  doctorAddress: {
-    city: { type: String },
-    country: { type: String },
+  address: {
+    type: String,
+    required: true,
   },
   rate: {
     type: String,
