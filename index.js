@@ -3,26 +3,17 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 const app = express();
+app.use(express.json());
 app.use(cors());
 app.use(compression());
 const morgan = require("morgan");
-const mongoose = require("mongoose");
 const userRouter = require("./modules/auth/userRouter");
 const doctorRouter = require("./modules/doctor/doctorRouter");
-app.use(morgan("combined"));
-app.use(express.json());
 
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("combined"));
+}
 app.use(express.urlencoded());
-
-//connect to database
-mongoose.connect(
-  "mongodb://localhost:27017/testUsers",
-  { useNewUrlParser: true },
-  (err) => {
-    if (err) process.exit(1);
-    console.log("connected to database successfully");
-  }
-);
 app.use("/users", userRouter);
 app.use("/doctors", doctorRouter);
 
@@ -40,4 +31,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(3000);
+module.exports = app;
