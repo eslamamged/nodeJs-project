@@ -1,41 +1,9 @@
 const bcrypt = require("bcrypt");
-const User = require("./userModel");
+const User = require("../modules/user/userModel");
 const jwt = require("jsonwebtoken");
 const util = require("util");
-const { read } = require("fs");
 const asyncSign = util.promisify(jwt.sign);
 const secretKey = "ksdwkjwncnjewfjwnewrnj";
-
-exports.checkID = async (req, res, next, value) => {
-  const user = await User.findOne({ _id: value });
-  if (!user) {
-    return res.status(404).send({
-      status: "fail",
-      message: "invalid ID",
-    });
-  }
-  next();
-};
-
-exports.checkRregisterInfo = async (req, res, next) => {
-  if (!req.body.name || !req.body.password || !req.body.email) {
-    return res.status(404).send({
-      status: "fail",
-      message: "please complete user informations",
-    });
-  }
-  next();
-};
-
-exports.checkLoginInfo = async (req, res, next) => {
-  if (!req.body.password || !req.body.email) {
-    return res.status(404).send({
-      status: "fail",
-      message: "missing email or password",
-    });
-  }
-  next();
-};
 
 exports.getAllUsers = async (req, res, next) => {
   const users = await User.find();

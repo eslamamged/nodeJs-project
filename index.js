@@ -7,8 +7,8 @@ app.use(express.json());
 app.use(cors());
 app.use(compression());
 const morgan = require("morgan");
-const userRouter = require("./modules/auth/userRouter");
-const doctorRouter = require("./modules/doctor/doctorRouter");
+const userRouter = require("./Routes/userRouter");
+const doctorRouter = require("./Routes/doctorRouter");
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("combined"));

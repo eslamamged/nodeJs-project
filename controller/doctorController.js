@@ -1,32 +1,4 @@
-const Doctor = require("./doctorModel");
-
-exports.checkID = async (req, res, next, value) => {
-  const doctor = await Doctor.findOne({ _id: value });
-  if (!doctor) {
-    return res.status(404).send({
-      status: "fail",
-      message: "invalid ID",
-    });
-  }
-  next();
-};
-
-exports.checkBody = async (req, res, next) => {
-  if (
-    !req.body.name ||
-    !req.body.department ||
-    !req.body.email ||
-    !req.body.address ||
-    !req.body.rate ||
-    !req.body.image
-  ) {
-    return res.status(404).send({
-      status: "fail",
-      message: "please complete the doctor information",
-    });
-  }
-  next();
-};
+const Doctor = require("../modules/doctor/doctorModel");
 
 exports.getAllDoctor = async (req, res, next) => {
   const doctors = await Doctor.find();
@@ -36,7 +8,7 @@ exports.editDoctor = async (req, res, next) => {
   let { name, department, email, phone, address, rate, image } = req.body;
   const { id } = req.params;
   try {
-    const oldDoctor = await Doctor.findOne({ id });
+    const oldDoctor = await Doctor.findById(id);
     const updated = await Doctor.findByIdAndUpdate(id, {
       name: name || oldDoctor.name,
       department: department || oldDoctor.department,
@@ -55,7 +27,7 @@ exports.editDoctor = async (req, res, next) => {
 
 exports.getDoctor = async (req, res, next) => {
   try {
-    const doctor = await Doctor.findOne({ _id: req.params.id });
+    const doctor = await Doctor.findById(req.params.id);
     res.send(doctor);
   } catch (error) {
     error.statusCode = 404;

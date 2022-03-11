@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const doctorSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    required: [true, "Doctor must have a name"],
     minlength: 3,
     maxlength: 44,
   },
@@ -13,7 +13,7 @@ const doctorSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, "Doctor must have a email"],
     minlength: 3,
     maxlength: 255,
     unique: true,
