@@ -1,9 +1,20 @@
 const Doctor = require("../modules/doctor/doctorModel");
 
-exports.getAllDoctor = async (req, res, next) => {
-  const doctors = await Doctor.find();
-  res.send(doctors);
+exports.getAllDoctors = async (req, res, next) => {
+  try {
+    const QueryObj = { ...req.query };
+    const excludedFields = ["page", "sort", "limit", "fields"];
+    excludedFields.forEach((el) => delete QueryObj[el]);
+    let QueryStr = JSON.stringify(QueryObj);
+    QueryStr = QueryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    const doctors = await Doctor.find(JSON.parse(QueryStr));
+    res.send(doctors);
+  } catch (error) {
+    error.statusCode = 500;
+    next(error);
+  }
 };
+
 exports.editDoctor = async (req, res, next) => {
   let { name, department, email, phone, address, rate, image } = req.body;
   const { id } = req.params;

@@ -32,7 +32,7 @@ const doctorSchema = new mongoose.Schema({
     required: true,
   },
   rate: {
-    type: String,
+    type: Number,
     required: true,
   },
 });

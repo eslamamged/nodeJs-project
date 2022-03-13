@@ -11,11 +11,11 @@ exports.getAllUsers = async (req, res, next) => {
 };
 
 exports.editUser = async (req, res, next) => {
-  const { username, password, email } = req.body;
+  const { name, password, email } = req.body;
   const { id } = req.params;
   try {
     const updated = await User.findByIdAndUpdate(id, {
-      username,
+      name,
       password,
       email,
     });

@@ -5,7 +5,7 @@ const doctorController = require("../controller/doctorController");
 
 doctorRouter
   .route("/", auth)
-  .get(doctorController.getAllDoctor)
+  .get(doctorController.getAllDoctors)
   .post(doctorController.createDocter);
 doctorRouter
   .route("/:id", auth)
