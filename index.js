@@ -18,14 +18,18 @@ app.use("/users", userRouter);
 app.use("/doctors", doctorRouter);
 
 // this is wildcard API to handle the wrong url
-app.get("*", (req, res) => {
-  throw new Error("sorry,this is invalid url");
+app.get("*", (req, res, next) => {
+  const err = new Error("sorry,this is invalid url");
+  err.status = "fail";
+  err.statusCode = "404";
+  next(err);
 });
 
 app.use((err, req, res, next) => {
-  res.send({
-    statusCode: err.statusCode,
-    status: "fail",
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || "fail";
+  res.status(err.statusCode).json({
+    status: err.status,
     message: err.message,
     errors: err.errors || [],
   });
